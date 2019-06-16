@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class ApiService {
-  apiURL: string = 'https://api.nuclias.tw/v1/';
+  apiURL: string = 'https://api.nuclias.tw/v1';
   constructor(private httpClient: HttpClient) { }
 
   public getEmitterKeys() {

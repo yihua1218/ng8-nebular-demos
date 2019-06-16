@@ -11,6 +11,9 @@ import { AppComponent } from './app.component';
 import { EmitterClientComponent } from './emitter-client/emitter-client.component';
 import { AngularComponent } from './angular/angular.component';
 
+// Services
+import { ApiService } from './api.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +34,7 @@ import { AngularComponent } from './angular/angular.component';
     NbListModule,
     NbChatModule
   ],
-  providers: [],
+  providers: [ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

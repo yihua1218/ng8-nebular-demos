@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Emitter } from './emitter';
+import { ApiService } from '../api.service';
+
 import * as Url from 'url-parse';
 
 @Component({
@@ -17,11 +19,22 @@ export class EmitterClientComponent implements OnInit {
   messages = [];
   emitter: any;
   connected = false;
+  keys: any;
 
-  constructor() { }
+  constructor(private apiService: ApiService) { }
 
   ngOnInit() {
     this.emitter = new Emitter();
+    this.apiService.getEmitterKeys()
+      .subscribe((data: any) => {
+        this.keys = data.channels;
+        console.log('keys:', this.keys);
+        if (this.keys.length > 0) {
+          this.channel = this.keys[0].channel;
+          this.key = this.keys[0].key;
+        }
+      });
+    
   }
 
   onKeyUp(event: any) {
