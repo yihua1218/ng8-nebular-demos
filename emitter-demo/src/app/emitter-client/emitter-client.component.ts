@@ -32,6 +32,7 @@ export class EmitterClientComponent implements OnInit {
         if (this.keys.length > 0) {
           this.channel = this.keys[0].channel;
           this.key = this.keys[0].key;
+          this.onConnect();
         }
       });
     
@@ -74,27 +75,17 @@ export class EmitterClientComponent implements OnInit {
       console.log('on offline:');
       this.connected = false;
     }).on('message', (msg) => {
-      console.log(msg);
-      this.messages.push({
-        text: msg.asString(),
-        date: new Date(),
-        reply: true,
-        type: 'text',
-        user: {
-          name: 'Server',
-          avatar: 'https://i.gifer.com/no.gif',
-        },
-      });      
+      const message = msg.asObject();
+      message.reply = false;
+      if (message.user.name !== this.name) {
+        this.messages.push(message);  
+      }
     });
   }
 
   onConnect() {
-    console.log('server:', this.server);
-    console.log('channel:', this.channel);
-    console.log('key:', this.key);
     this.url = `ws://${this.server}`;
     const parts = Url(this.url);
-    console.log('parts:', parts);
     let isSecure = false;
     let port = 80;
 
@@ -112,7 +103,6 @@ export class EmitterClientComponent implements OnInit {
       host: parts.host,
       port: port,
     };
-    console.log('connectRequest:', connectRequest);
     this.emitter.connect(connectRequest, (event) =>{
       console.log(event);
       this.onConnected();
@@ -132,7 +122,7 @@ export class EmitterClientComponent implements OnInit {
       };
     });
 
-    this.messages.push({
+    const message = {
       text: event.message,
       date: new Date(),
       reply: true,
@@ -140,14 +130,16 @@ export class EmitterClientComponent implements OnInit {
       files: files,
       user: {
         name: this.name,
-        avatar: 'https://i.gifer.com/no.gif',
+        avatar: 'https://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/robot-face.png',
       },
-    });
+    };
+
+    this.messages.push(message);
 
     this.emitter.publish({
       key: this.key,
       channel: this.channel,
-      message: event.message,
+      message: JSON.stringify(message),
     });
     // const botReply = this.chatShowcaseService.reply(event.message);
     // if (botReply) {

@@ -16,6 +16,10 @@
         <input id="key" type="text" nbInput placeholder="Key" [value]="key" (keyup)="onKeyUp($event)">
       </nb-list-item>
       <nb-list-item>
+        Name
+        <input id="name" type="text" nbInput placeholder="Name" [value]="name" (keyup)="onKeyUp($event)">
+      </nb-list-item>
+      <nb-list-item>
         <button nbButton size="tiny" (click)="onConnect()" [disabled]="connected">Connect</button>
         <button nbButton size="tiny" (click)="onDisconnect()" [disabled]="! connected">Disconnect</button>
         <button nbButton size="tiny" (click)="onClean()" [disabled]="messages.length == 0">Clean</button>
