@@ -58,28 +58,55 @@ export class EmitterClientComponent implements OnInit {
   onConnected() {
     console.log('onConnected:');
     this.connected = true;
-    this.emitter.me().subscribe({
-      key: this.key,
-      channel: this.channel,
-    }).presence({
-      key: this.key,
-      channel: this.channel,
-    }).on('connect', (connack) => {
-      console.log('connack:', connack);
-      this.connected = true;
-    }).on('disconnect', () => {
-      console.log('on disconnect:');
-      this.connected = false;
-    }).on('offline', () => {
-      console.log('on offline:');
-      this.connected = false;
-    }).on('message', (msg) => {
-      const message = msg.asObject();
-      message.reply = false;
-      if (message.user.name !== this.name) {
-        this.messages.push(message);  
-      }
-    });
+    this.emitter
+    .on('connect', (connack) => {
+        console.log('connack:', connack);
+        this.connected = true;
+      })
+    .on('disconnect', () => {
+        console.log('on disconnect:');
+        this.connected = false;
+      })
+    .on('message', (msg) => {
+        const message = msg.asObject();
+        console.log(message);
+        if (message.user) {
+          message.reply = false;
+          if (message.user.name !== this.name) {
+            this.messages.push(message);
+          }
+          if (message.text == '/presence') {
+            this.emitter.presence({
+              key: this.key,
+              channel: this.channel,
+            });
+          }
+        } else {
+          console.log(message);
+        }
+      })
+    .on('offline', () => {
+        console.log('on offline:');
+        this.connected = false;
+      })
+    .on('keygen', (keygen) => {
+        console.log(keygen);
+      })
+    .on('presence', (msg) => {
+        console.log('presence:', msg);
+      })
+    .on('me', (msg) => {
+        console.log('me:', msg);
+      })
+    .me()
+    .subscribe({
+        key: this.key,
+        channel: this.channel,
+      })
+    .presence({
+        key: this.key,
+        channel: this.channel,
+      });
   }
 
   onConnect() {
