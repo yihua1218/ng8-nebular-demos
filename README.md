@@ -80,6 +80,8 @@ export class SomePageModule {
 
 ## Emitter
 
+[Emiotter Demo](http://emitter-demo.nuclias.tw/), Nuclias.TW
+
 [Getting Started](https://emitter.io/develop/getting-started/), @emitter
 
 [Nuclias Emitter Keygen](http://emitter.nuclias.tw/keygen)
@@ -134,3 +136,9 @@ ng add @nebular/theme
 
 [Getting Started with the GIPHY API](https://developers.giphy.com/docs/)
 
+## AWS S3
+
+```bash
+cd emitter-demo/dist/emitter-demo
+aws --profile hoebus s3 sync . s3://emitter-demo.nuclias.tw --acl public-read
+```

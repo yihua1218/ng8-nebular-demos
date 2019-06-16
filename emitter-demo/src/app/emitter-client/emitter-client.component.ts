@@ -28,7 +28,6 @@ export class EmitterClientComponent implements OnInit {
     this.apiService.getEmitterKeys()
       .subscribe((data: any) => {
         this.keys = data.channels;
-        console.log('keys:', this.keys);
         if (this.keys.length > 0) {
           this.channel = this.keys[0].channel;
           this.key = this.keys[0].key;
