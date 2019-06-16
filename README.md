@@ -80,7 +80,7 @@ export class SomePageModule {
 
 ## Emitter
 
-[Emiotter Demo](http://emitter-demo.nuclias.tw/), Nuclias.TW
+[Emitter Demo](http://emitter-demo.nuclias.tw/), Nuclias.TW
 
 [Getting Started](https://emitter.io/develop/getting-started/), @emitter
 
