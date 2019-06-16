@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Emitter } from 'emitter-io';
+import * as Url from 'url-parse';
 
 @Component({
   selector: 'app-emitter-client',
@@ -7,16 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EmitterClientComponent implements OnInit {
   server = 'emitter.nuclias.tw';
+  url = '';
   channel = 'emitter-demo/';
   key = 'TOFNjOUXjOgkJk-nRTaXU5-YJ48fXbTt';
   name = 'Guest';
   message = '';
   messages = [];
+  emitter: any;
 
   constructor() { }
 
   ngOnInit() {
-    
+    this.emitter = new Emitter();
   }
 
   onKeyUp(event: any) {
@@ -41,6 +45,30 @@ export class EmitterClientComponent implements OnInit {
     console.log('server:', this.server);
     console.log('channel:', this.channel);
     console.log('key:', this.key);
+    this.url = `wss://${this.server}`;
+    const parts = Url(this.url);
+    console.log('parts:', parts);
+    let isSecure = false;
+    let port = 80;
+
+    if (parts.protocol === 'wss:') {
+      isSecure = true;
+      port = 443;
+    }
+
+    if (parts.port !== "") {
+      port = parts.port;
+    }
+
+    const connectRequest = {
+      secure: isSecure,
+      host: parts.host,
+      port: port,
+    };
+    console.log('connectRequest:', connectRequest);
+    this.emitter.connect(connectRequest, (event) =>{
+      console.log(event);
+    });
   }
 
   sendMessage(event: any) {

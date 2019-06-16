@@ -87,7 +87,25 @@ npm install emitter-io --save
 # Generate components
 ng g component angular
 ng g component emitter-client
+# Generate services
+n g service
+# Start server for developing
+npm install
+npm run patch
+npm start
 ```
+
+## stream
+
+```bash
+cd node_modules/mqtt/node_modules
+rm -rf readable-stream/
+ln -s ../../../node_modules/readable-stream/
+```
+
+## Browserfy
+
+Edit node_modules/core-util-is/lib/util.js, and add `global.Buffer = global.Buffer || require('buffer').Buffer;` before `exports.isBuffer = Buffer.isBuffer;`
 
 ## Chatroom
 
@@ -96,3 +114,7 @@ ng new chatroom
 cd chartoom
 ng add @nebular/theme
 ```
+
+## GIPHY API
+
+[Getting Started with the GIPHY API](https://developers.giphy.com/docs/)

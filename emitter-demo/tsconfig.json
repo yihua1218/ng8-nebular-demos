@@ -18,6 +18,10 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "jszip": ["node_modules/jszip/dist/jszip.min.js"],
+      "stream": ["../node_modules/readable-stream/readable.js"]
+    }
   }
 }
