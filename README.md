@@ -11,6 +11,8 @@ npm install -g @angular/cli
 
 ## Nebular
 
+[Nebula](https://github.com/akveo/nebular), GitHub
+
 ```bash
 ng new nebular-demo
 cd nebular-demo
@@ -73,6 +75,8 @@ export class SomePageModule {
 ## Emitter
 
 [Getting Started](https://emitter.io/develop/getting-started/), @emitter
+
+[Nuclias Emitter Keygen](http://emitter.nuclias.tw/keygen)
 
 ```bash
 ng new emitter-demo
