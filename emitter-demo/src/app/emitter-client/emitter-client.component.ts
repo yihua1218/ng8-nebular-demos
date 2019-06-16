@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Emitter } from 'emitter-io';
+import { Emitter } from './emitter';
 import * as Url from 'url-parse';
 
 @Component({
@@ -10,12 +10,13 @@ import * as Url from 'url-parse';
 export class EmitterClientComponent implements OnInit {
   server = 'emitter.nuclias.tw';
   url = '';
-  channel = 'emitter-demo/';
-  key = 'TOFNjOUXjOgkJk-nRTaXU5-YJ48fXbTt';
+  channel = 'web/';
+  key = 'tbO95-Hup9l5u1OyC4T4-obhOI2rObL3';
   name = 'Guest';
   message = '';
   messages = [];
   emitter: any;
+  connected = false;
 
   constructor() { }
 
@@ -41,11 +42,44 @@ export class EmitterClientComponent implements OnInit {
     }
   }
 
+  onConnected() {
+    console.log('onConnected:');
+    this.connected = true;
+    this.emitter.me().subscribe({
+      key: this.key,
+      channel: this.channel,
+    }).presence({
+      key: this.key,
+      channel: this.channel,
+    }).on('connect', (connack) => {
+      console.log('connack:', connack);
+      this.connected = true;
+    }).on('disconnect', () => {
+      console.log('on disconnect:');
+      this.connected = false;
+    }).on('offline', () => {
+      console.log('on offline:');
+      this.connected = false;
+    }).on('message', (msg) => {
+      console.log(msg);
+      this.messages.push({
+        text: msg.asString(),
+        date: new Date(),
+        reply: true,
+        type: 'text',
+        user: {
+          name: 'Server',
+          avatar: 'https://i.gifer.com/no.gif',
+        },
+      });      
+    });
+  }
+
   onConnect() {
     console.log('server:', this.server);
     console.log('channel:', this.channel);
     console.log('key:', this.key);
-    this.url = `wss://${this.server}`;
+    this.url = `ws://${this.server}`;
     const parts = Url(this.url);
     console.log('parts:', parts);
     let isSecure = false;
@@ -68,7 +102,12 @@ export class EmitterClientComponent implements OnInit {
     console.log('connectRequest:', connectRequest);
     this.emitter.connect(connectRequest, (event) =>{
       console.log(event);
+      this.onConnected();
     });
+  }
+
+  onDisconnect() {
+    this.emitter.disconnect();
   }
 
   sendMessage(event: any) {
@@ -90,6 +129,12 @@ export class EmitterClientComponent implements OnInit {
         name: this.name,
         avatar: 'https://i.gifer.com/no.gif',
       },
+    });
+
+    this.emitter.publish({
+      key: this.key,
+      channel: this.channel,
+      message: event.message,
     });
     // const botReply = this.chatShowcaseService.reply(event.message);
     // if (botReply) {

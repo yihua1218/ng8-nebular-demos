@@ -1,0 +1,17 @@
+--- node_modules/emitter-io/lib/emitter.ts.orig	2019-06-16 17:05:30.716100400 +0800
++++ node_modules/emitter-io/lib/emitter.ts	2019-06-16 17:17:43.063330500 +0800
+@@ -1,4 +1,4 @@
+-const mqtt = require('mqtt');
++import { connect } from '../vendor/mqtt.min.js';
+ 
+ export class Emitter {
+ 
+@@ -37,7 +37,7 @@
+         var brokerUrl = `${request.secure ? "wss://" : "ws://"}${request.host}:${request.port}`;
+ 
+         this._callbacks = {"connect": [handler]};
+-        this._mqtt = mqtt.connect(brokerUrl, request);
++        this._mqtt = connect(brokerUrl, request);
+ 
+         this._mqtt.on(EmitterEvents.connect, () => this._tryInvoke(EmitterEvents.connect, this));
+         this._mqtt.on("close", () => this._tryInvoke(EmitterEvents.disconnect, this));

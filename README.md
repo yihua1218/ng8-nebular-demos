@@ -78,12 +78,16 @@ export class SomePageModule {
 
 [Nuclias Emitter Keygen](http://emitter.nuclias.tw/keygen)
 
+Package | Required Version
+-|-
+readable-stream | 3.4.0
+mqtt | 3.0.0
+
 ```bash
 ng new emitter-demo
 cd emitter-demo
 ng add @nebular/theme
 npm install --save @nebular/theme @angular/cdk @angular/animations
-npm install emitter-io --save
 # Generate components
 ng g component angular
 ng g component emitter-client
@@ -93,6 +97,11 @@ n g service
 npm install
 npm run patch
 npm start
+```
+
+```bash
+ng g service api
+ng generate class emitter-keys
 ```
 
 ## stream
@@ -118,3 +127,4 @@ ng add @nebular/theme
 ## GIPHY API
 
 [Getting Started with the GIPHY API](https://developers.giphy.com/docs/)
+

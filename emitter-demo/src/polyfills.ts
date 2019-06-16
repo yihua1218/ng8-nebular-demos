@@ -61,14 +61,3 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
-declare var setImmediate;
-
-import 'setimmediate';
-
-(window as any).global = window;
-
-(window as any).process = {
-  env: { DEBUG: undefined },
-  browser: true,
-  nextTick: setImmediate,
-};
