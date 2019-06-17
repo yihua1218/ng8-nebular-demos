@@ -2,7 +2,7 @@ import { connect as mconnect } from '../../../vendor/mqtt.min.js';
 
 export class Emitter {
 
-    private _mqtt: any;
+    private mqtt: any;
     private _callbacks: { [key: string]: ((args?: any) => void)[] };
 
     /**
@@ -37,13 +37,13 @@ export class Emitter {
         var brokerUrl = `${request.secure ? "wss://" : "ws://"}${request.host}:${request.port}`;
 
         this._callbacks = {"connect": [handler]};
-        this._mqtt = mconnect(brokerUrl, request);
+        this.mqtt = mconnect(brokerUrl, request);
 
-        this._mqtt.on(EmitterEvents.connect, () => this._tryInvoke(EmitterEvents.connect, this));
-        this._mqtt.on("close", () => this._tryInvoke(EmitterEvents.disconnect, this));
-        this._mqtt.on("offline", () => this._tryInvoke(EmitterEvents.offline, this));
-        this._mqtt.on("error", error => this._tryInvoke(EmitterEvents.error, error));
-        this._mqtt.on("message", (topic, msg, packet) => {
+        this.mqtt.on(EmitterEvents.connect, () => this._tryInvoke(EmitterEvents.connect, this));
+        this.mqtt.on("close", () => this._tryInvoke(EmitterEvents.disconnect, this));
+        this.mqtt.on("offline", () => this._tryInvoke(EmitterEvents.offline, this));
+        this.mqtt.on("error", error => this._tryInvoke(EmitterEvents.error, error));
+        this.mqtt.on("message", (topic, msg, packet) => {
             var message = new EmitterMessage(packet);
             if (this._startsWith(message.channel, "emitter/keygen")) {
                 // This is keygen message.
@@ -66,7 +66,7 @@ export class Emitter {
      * Disconnects the client.
      */
     public disconnect(): Emitter {
-        this._mqtt.end();
+        this.mqtt.end();
         return this;
     }
 
@@ -94,7 +94,7 @@ export class Emitter {
         }
 
         var topic = this._formatChannel(request.key, request.channel, options);
-        this._mqtt.publish(topic, request.message);
+        this.mqtt.publish(topic, request.message);
         return this;
     }
 
@@ -107,7 +107,7 @@ export class Emitter {
         if (typeof request.message !== "object" && typeof request.message !== "string")
             this._throwError("emitter.publishWithLink: request object does not contain a 'message' object.");
 
-        this._mqtt.publish(request.link, request.message);
+        this.mqtt.publish(request.link, request.message);
         return this;
     }
 
@@ -127,7 +127,7 @@ export class Emitter {
 
         // Send MQTT subscribe
         var topic = this._formatChannel(request.key, request.channel, options);
-        this._mqtt.subscribe(topic);
+        this.mqtt.subscribe(topic);
         return this;
     }
 
@@ -167,7 +167,7 @@ export class Emitter {
             "subscribe": request.subscribe}
 
         console.log(JSON.stringify(request))
-        this._mqtt.publish('emitter/link/', JSON.stringify(request));
+        this.mqtt.publish('emitter/link/', JSON.stringify(request));
         return this;
     }
 
@@ -182,7 +182,7 @@ export class Emitter {
 
         // Send MQTT unsubscribe
         var topic = this._formatChannel(request.key, request.channel, []);
-        this._mqtt.unsubscribe(topic);
+        this.mqtt.unsubscribe(topic);
         return this;
     }
 
@@ -196,7 +196,7 @@ export class Emitter {
             this._throwError("emitter.keygen: request object does not contain a 'channel' string.");
 
         // Publish the request
-        this._mqtt.publish("emitter/keygen/", JSON.stringify(request));
+        this.mqtt.publish("emitter/keygen/", JSON.stringify(request));
         return this;
     }
 
@@ -210,7 +210,7 @@ export class Emitter {
             this._throwError("emitter.presence: request object does not contain a 'channel' string.");
 
         // Publish the request
-        this._mqtt.publish("emitter/presence/", JSON.stringify(request));
+        this.mqtt.publish("emitter/presence/", JSON.stringify(request));
         return this;
     }
 
@@ -219,7 +219,7 @@ export class Emitter {
      */
     public me(): Emitter {
         // Publish the request
-        this._mqtt.publish("emitter/me/", "");
+        this.mqtt.publish("emitter/me/", "");
         return this;
     }
 
