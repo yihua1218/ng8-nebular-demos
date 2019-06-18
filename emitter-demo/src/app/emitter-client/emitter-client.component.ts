@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Emitter } from './emitter';
 import { ApiService } from '../api.service';
-
-import * as Url from 'url-parse';
 
 @Component({
   selector: 'app-emitter-client',
@@ -10,133 +7,30 @@ import * as Url from 'url-parse';
   styleUrls: ['./emitter-client.component.sass']
 })
 export class EmitterClientComponent implements OnInit {
-  server = 'emitter.nuclias.tw';
-  url = '';
-  channel = 'web/';
-  key = 'tbO95-Hup9l5u1OyC4T4-obhOI2rObL3';
-  name = 'Guest';
-  message = '';
-  messages = [];
   emitter: any;
-  connected = false;
-  keys: any;
 
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
-    this.emitter = new Emitter();
-    this.apiService.getEmitterKeys()
-      .subscribe((data: any) => {
-        this.keys = data.channels;
-        if (this.keys.length > 0) {
-          this.channel = this.keys[0].channel;
-          this.key = this.keys[0].key;
-          this.onConnect();
-        }
-      });
-    
+    this.emitter = this.apiService.emitter;
   }
 
   onKeyUp(event: any) {
     if (event.target.id === 'server') {
-      this.server = event.target.value;
+      this.apiService.server = event.target.value;
     }
     if (event.target.id === 'channel') {
-      this.channel = event.target.value;
+      this.apiService.channel = event.target.value;
     }
     if (event.target.id === 'key') {
-      this.key = event.target.value;
+      this.apiService.key = event.target.value;
     }
     if (event.target.id === 'message') {
-      this.message = event.target.value;
+      this.apiService.message = event.target.value;
     }
     if (event.target.id === 'name') {
-      this.name = event.target.value;
+      this.apiService.name = event.target.value;
     }
-  }
-
-  onConnected() {
-    console.log('onConnected:');
-    this.connected = true;
-    this.emitter
-    .on('connect', (connack) => {
-        console.log('connack:', connack);
-        this.connected = true;
-      })
-    .on('disconnect', () => {
-        console.log('on disconnect:');
-        this.connected = false;
-      })
-    .on('message', (msg) => {
-        const message = msg.asObject();
-        console.log(message);
-        if (message.user) {
-          message.reply = false;
-          if (message.user.name !== this.name) {
-            this.messages.push(message);
-          }
-          if (message.text == '/presence') {
-            this.emitter.presence({
-              key: this.key,
-              channel: this.channel,
-            });
-          }
-        } else {
-          console.log(message);
-        }
-      })
-    .on('offline', () => {
-        console.log('on offline:');
-        this.connected = false;
-      })
-    .on('keygen', (keygen) => {
-        console.log(keygen);
-      })
-    .on('presence', (msg) => {
-        console.log('presence:', msg);
-      })
-    .on('me', (msg) => {
-        console.log('me:', msg);
-      })
-    .me()
-    .subscribe({
-        key: this.key,
-        channel: this.channel,
-      })
-    .presence({
-        key: this.key,
-        channel: this.channel,
-      });
-  }
-
-  onConnect() {
-    this.url = `ws://${this.server}`;
-    const parts = Url(this.url);
-    let isSecure = false;
-    let port = 80;
-
-    if (parts.protocol === 'wss:') {
-      isSecure = true;
-      port = 443;
-    }
-
-    if (parts.port !== "") {
-      port = parts.port;
-    }
-
-    const connectRequest = {
-      secure: isSecure,
-      host: parts.host,
-      port: port,
-    };
-    this.emitter.connect(connectRequest, (event) =>{
-      console.log(event);
-      this.onConnected();
-    });
-  }
-
-  onDisconnect() {
-    this.emitter.disconnect();
   }
 
   sendMessage(event: any) {
@@ -153,18 +47,18 @@ export class EmitterClientComponent implements OnInit {
       date: new Date(),
       reply: true,
       type: files.length ? 'file' : 'text',
-      files: files,
+      files,
       user: {
-        name: this.name,
+        name: this.apiService.name,
         avatar: 'https://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/robot-face.png',
       },
     };
 
-    this.messages.push(message);
+    this.apiService.messages.push(message);
 
     this.emitter.publish({
-      key: this.key,
-      channel: this.channel,
+      key: this.apiService.key,
+      channel: this.apiService.channel,
       message: JSON.stringify(message),
     });
     // const botReply = this.chatShowcaseService.reply(event.message);
@@ -174,6 +68,6 @@ export class EmitterClientComponent implements OnInit {
   }
 
   onClean() {
-    this.messages.length = 0;
+    this.apiService.messages.length = 0;
   }
 }

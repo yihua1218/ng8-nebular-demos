@@ -132,6 +132,12 @@ cd chartoom
 ng add @nebular/theme
 ```
 
+### Presence List
+
+```bash
+ng g component presence-list
+```
+
 ## GIPHY API
 
 [Getting Started with the GIPHY API](https://developers.giphy.com/docs/)

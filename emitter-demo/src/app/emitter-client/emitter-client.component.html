@@ -2,27 +2,31 @@
   <nb-layout-header fixed>Emitter Demo</nb-layout-header>
 
   <nb-sidebar>
+    <app-presence-list></app-presence-list>
     <nb-list>
       <nb-list-item>
+        <nb-icon icon="settings-2-outline"></nb-icon> Settings
+      </nb-list-item>
+      <nb-list-item>
         Server
-        <input id="server" type="text" nbInput placeholder="Server" [value]="server" (keyup)="onKeyUp($event)">
+        <input id="server" type="text" nbInput placeholder="Server" [value]="apiService.server" (keyup)="onKeyUp($event)">
       </nb-list-item>
       <nb-list-item>
         Channel
-        <input id="channel" type="text" nbInput placeholder="Channel" [value]="channel" (keyup)="onKeyUp($event)">
+        <input id="channel" type="text" nbInput placeholder="Channel" [value]="apiService.channel" (keyup)="onKeyUp($event)">
       </nb-list-item>
       <nb-list-item>
         Channel Key
-        <input id="key" type="text" nbInput placeholder="Key" [value]="key" (keyup)="onKeyUp($event)">
+        <input id="key" type="text" nbInput placeholder="Key" [value]="apiService.key" (keyup)="onKeyUp($event)">
       </nb-list-item>
       <nb-list-item>
         Name
-        <input id="name" type="text" nbInput placeholder="Name" [value]="name" (keyup)="onKeyUp($event)">
+        <input id="name" type="text" nbInput placeholder="Name" [value]="apiService.name" (keyup)="onKeyUp($event)">
       </nb-list-item>
       <nb-list-item>
-        <button nbButton size="tiny" (click)="onConnect()" [disabled]="connected">Connect</button>
-        <button nbButton size="tiny" (click)="onDisconnect()" [disabled]="! connected">Disconnect</button>
-        <button nbButton size="tiny" (click)="onClean()" [disabled]="messages.length == 0">Clean</button>
+        <button nbButton size="tiny" (click)="apiService.onConnect()" [disabled]="apiService.connected">Connect</button>
+        <button nbButton size="tiny" (click)="apiService.onDisconnect()" [disabled]="! apiService.connected">Disconnect</button>
+        <button nbButton size="tiny" (click)="apiService.onClean()" [disabled]="apiService.messages.length == 0">Clean</button>
       </nb-list-item>
     </nb-list>
   </nb-sidebar>
