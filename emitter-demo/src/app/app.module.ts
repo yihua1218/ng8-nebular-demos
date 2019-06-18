@@ -19,13 +19,15 @@ import { AngularComponent } from './angular/angular.component';
 // Services
 import { ApiService } from './api.service';
 import { PresenceListComponent } from './presence-list/presence-list.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EmitterClientComponent,
     AngularComponent,
-    PresenceListComponent
+    PresenceListComponent,
+    SettingsComponent
   ],
   imports: [
     HttpClientModule,

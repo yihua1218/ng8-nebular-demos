@@ -138,6 +138,12 @@ ng add @nebular/theme
 ng g component presence-list
 ```
 
+### Settings
+
+```bash
+ng g component settings
+```
+
 ## GIPHY API
 
 [Getting Started with the GIPHY API](https://developers.giphy.com/docs/)

@@ -50,7 +50,7 @@ export class ApiService {
         console.log(message);
         if (message.user) {
           message.reply = false;
-          if (message.user.name !== this.name) {
+          if (message.user.name !== this.name || 1) {
             this.messages.push(message);
           }
           if (message.text === '/presence') {
@@ -80,6 +80,7 @@ export class ApiService {
     .subscribe({
         key: this.key,
         channel: this.channel,
+        last: 50,
       })
     .presence({
         key: this.key,

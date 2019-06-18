@@ -60,6 +60,7 @@ export class EmitterClientComponent implements OnInit {
       key: this.apiService.key,
       channel: this.apiService.channel,
       message: JSON.stringify(message),
+      ttl: 10080,
     });
     // const botReply = this.chatShowcaseService.reply(event.message);
     // if (botReply) {

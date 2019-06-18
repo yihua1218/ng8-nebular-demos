@@ -1,1 +1,11 @@
-<router-outlet></router-outlet>
+<nb-layout>
+  <nb-layout-header fixed>Emitter Demo</nb-layout-header>
+
+  <nb-sidebar>
+    <app-presence-list></app-presence-list>
+  </nb-sidebar>
+
+  <nb-layout-column>
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+</nb-layout>

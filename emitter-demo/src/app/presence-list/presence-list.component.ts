@@ -8,6 +8,11 @@ import { Component, OnInit } from '@angular/core';
 export class PresenceListComponent implements OnInit {
   items = [
     {
+      title: 'Chat room',
+      icon: 'message-square-outline',
+      link: '/',
+    },
+    {
       title: 'Peoples',
       icon: 'people-outline',
       link: [],
@@ -15,7 +20,7 @@ export class PresenceListComponent implements OnInit {
     {
       title: 'Settings',
       icon: 'lock-outline',
-      link: [],
+      link: '/settings',
     },
   ];
 

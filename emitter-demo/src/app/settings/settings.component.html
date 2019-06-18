@@ -1,0 +1,22 @@
+<nb-card>
+  <nb-card-body>
+    <nb-icon icon="settings-2-outline"></nb-icon> Settings
+    Server
+    <input id="server" type="text" nbInput placeholder="Server" [value]="apiService.server" (keyup)="onKeyUp($event)"
+      class="input-full-width size-medium shape-rectangle">
+    Channel
+    <input id="channel" type="text" nbInput placeholder="Channel" [value]="apiService.channel" (keyup)="onKeyUp($event)"
+      class="input-full-width size-medium shape-rectangle">
+    Channel Key
+    <input id="key" type="text" nbInput placeholder="Key" [value]="apiService.key" (keyup)="onKeyUp($event)"
+      class="input-full-width size-medium shape-rectangle">
+    Name
+    <input id="name" type="text" nbInput placeholder="Name" [value]="apiService.name" (keyup)="onKeyUp($event)"
+      class="input-full-width size-medium shape-rectangle">
+    <button nbButton size="tiny" (click)="apiService.onConnect()" [disabled]="apiService.connected">Connect</button>
+    <button nbButton size="tiny" (click)="apiService.onDisconnect()"
+      [disabled]="! apiService.connected">Disconnect</button>
+    <button nbButton size="tiny" (click)="apiService.onClean()"
+      [disabled]="apiService.messages.length == 0">Clean</button>
+  </nb-card-body>
+</nb-card>
