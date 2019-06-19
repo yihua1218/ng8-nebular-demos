@@ -15,7 +15,9 @@ export class PresenceListComponent implements OnInit {
     {
       title: 'Peoples',
       icon: 'people-outline',
+      expanded: true,
       link: [],
+      children: [],
     },
     {
       title: 'Settings',
